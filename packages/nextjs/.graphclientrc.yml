@@ -1,0 +1,5 @@
+sources:
+  - name: career
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/74237/career/v0.0.4
