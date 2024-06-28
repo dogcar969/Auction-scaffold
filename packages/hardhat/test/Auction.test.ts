@@ -44,7 +44,6 @@ describe("Auction", function () {
   });
   describe("constructor", function () {
     it("should match initialize parameter", async function () {
-      PERIOD;
       assert.equal(await Auction.i_auctionPeriod(), PERIOD);
     });
   });

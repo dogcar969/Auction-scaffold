@@ -61,7 +61,7 @@ const deployAnimalNft: DeployFunction = async function (hre: HardhatRuntimeEnvir
     cooridinatorAddress = networkConfig[chainId].vrfCoordinatorV2;
     subId = networkConfig[chainId].subscriptionId;
   }
-
+  console.log(chainId);
   const args: any[] = [
     cooridinatorAddress,
     networkConfig[chainId].gasLane,

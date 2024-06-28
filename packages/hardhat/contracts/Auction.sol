@@ -26,7 +26,6 @@ contract Auction is ReentrancyGuard {
 	uint256 public immutable i_auctionPeriod;
 	// nftAddress -> tokenId -> listings
 	mapping(address => mapping(uint256 => Listing)) s_listings;
-	// index => tokens
 	// user -> balance
 	mapping(address => uint256) userToBalance;
 

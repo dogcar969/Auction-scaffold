@@ -4,12 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import { execute } from "~~/.graphclient";
 import NFTCardWithFunction from "~~/components/AnimalNft/NFTCardWithFunction";
-import NftCard from "~~/components/Auction/nftCard";
-import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 
-const nfts = () => {
+const Nfts = () => {
   const { address: owner } = useAccount();
-  const animlaNftAddress = useDeployedContractInfo("AnimalNft").data?.address;
   const AnimalNftQuery = `
     {
   animalNfts(where:{owner:"${owner}"}) {
@@ -24,17 +21,14 @@ const nfts = () => {
     if (owner === undefined) {
       return;
     }
-    console.log(owner);
     execute(AnimalNftQuery, null)
       .then(res => {
         nfts.current = res;
-        console.log(nfts.current);
         setNftReady(true);
       })
       .catch(e => console.log(e));
   }, [owner]);
   const [page, setPage] = useState(0);
-  useEffect(() => {}, []);
   return (
     <div>
       <h1 className="text-center text-2xl mt-4">Your Animal Nfts</h1>
@@ -86,4 +80,4 @@ const nfts = () => {
   );
 };
 
-export default nfts;
+export default Nfts;

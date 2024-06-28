@@ -1,9 +1,10 @@
-const { ethers } = require("hardhat")
+const { ethers } = require("hardhat");
 
 const networkConfig: { [key: number | string]: any } = {
   default: {
     name: "hardhat",
     keepersUpdateInterval: "30",
+    gasLane: "0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c",
   },
   31337: {
     name: "localhost",
@@ -27,12 +28,12 @@ const networkConfig: { [key: number | string]: any } = {
     name: "mainnet",
     keepersUpdateInterval: "30",
   },
-}
+};
 
-const developmentChains = ["hardhat", "localhost"]
-const VERIFICATION_BLOCK_CONFIRMATIONS = 6
+const developmentChains = ["hardhat", "localhost"];
+const VERIFICATION_BLOCK_CONFIRMATIONS = 6;
 module.exports = {
   networkConfig,
   developmentChains,
   VERIFICATION_BLOCK_CONFIRMATIONS,
-}
+};

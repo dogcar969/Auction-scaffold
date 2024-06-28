@@ -46,7 +46,9 @@ describe("AnimalNft", function () {
     });
     it("should emit nftRequested", async function () {
       const fee = await animalNft.i_minFee();
-      await expect(animalNft.requestNft({ value: fee })).to.emit(animalNft, "nftRequested");
+      await expect(animalNft.requestNft({ value: fee }))
+        .to.emit(animalNft, "nftRequested")
+        .withArgs(1n, signer.address);
     });
   });
 
@@ -176,6 +178,33 @@ describe("AnimalNft", function () {
         signer,
         3n * (await animalNft.i_minFee()) + 2n * (await animalNft.i_threshold()),
       );
+    });
+  });
+  describe("min_fee should less than threshold", () => {
+    it("", async () => {
+      await expect(
+        deployments.deploy("AnimalNft", {
+          from: signer.address,
+          args: [
+            await VRFCoordinatorV2Mock.getAddress(),
+            "0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c",
+            0n,
+            6,
+            "500000",
+            [
+              "ipfs://QmTHTcEsuiRzpxinE4fkmxcpCRN3uHrHGPV5Njk1wQh1EM",
+              "ipfs://QmSb4bTzr4xvacvWxAjRuYPMoCwvqven7EGKV3F1EUPMSS",
+              "ipfs://QmbvwPcKX1m68y5dh3Fwst6mtf4ruy1r34RN8vSE7G8Afr",
+            ],
+            ethers.parseEther("0.1"),
+            ethers.parseEther("0.01"),
+          ],
+          log: true,
+          autoMine: true,
+        }),
+      )
+        .to.be.revertedWithCustomError(animalNft, "AnimalNft__ThresholdBiggerThanMinFee")
+        .withArgs(ethers.parseEther("0.01"), ethers.parseEther("0.1"));
     });
   });
 });

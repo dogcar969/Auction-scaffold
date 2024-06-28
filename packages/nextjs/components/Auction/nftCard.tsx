@@ -19,13 +19,21 @@ const defaultTokenInfo = {
   ],
 };
 
-const NftCard = ({ nftAddress, tokenId }: { nftAddress: string | undefined; tokenId: string | bigint }) => {
+const NftCard = ({
+  nftAddress,
+  tokenId,
+  pinata,
+}: {
+  nftAddress: string | undefined;
+  tokenId: string | bigint;
+  pinata: boolean;
+}) => {
   const tokenInfo = useRef<any>({});
   const [tokenReady, setTokenReady] = useState(false);
   useEffect(() => {
     setTokenReady(false);
     tokenInfo.current = {};
-    if (nftAddress && tokenId) {
+    if (nftAddress && tokenId !== null) {
       if (nftAddress.length !== 42 || nftAddress.indexOf("0x") !== 0) {
         return;
       }
@@ -36,6 +44,7 @@ const NftCard = ({ nftAddress, tokenId }: { nftAddress: string | undefined; toke
         args: [BigInt(tokenId)],
       })
         .then(async res => {
+          console.log(res);
           let tokenUri = res;
           try {
             if (tokenUri === "") {
@@ -44,7 +53,11 @@ const NftCard = ({ nftAddress, tokenId }: { nftAddress: string | undefined; toke
               return;
             }
             if (tokenUri.indexOf("ipfs://") === 0) {
-              tokenUri = tokenUri.replace("ipfs://", "https://ipfs.io/ipfs/");
+              if (pinata) {
+                tokenUri = tokenUri.replace("ipfs://", "https://silver-historical-squid-116.mypinata.cloud/ipfs/");
+              } else {
+                tokenUri = tokenUri.replace("ipfs://", "https://ipfs.io/ipfs/");
+              }
             }
             if (tokenUri)
               axios
@@ -53,10 +66,20 @@ const NftCard = ({ nftAddress, tokenId }: { nftAddress: string | undefined; toke
                   try {
                     tokenInfo.current = response.data;
                     if (tokenInfo.current.image.indexOf("ipfs://") === 0) {
-                      tokenInfo.current = {
-                        ...tokenInfo.current,
-                        image: tokenInfo.current.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
-                      };
+                      if (pinata) {
+                        tokenInfo.current = {
+                          ...tokenInfo.current,
+                          image: tokenInfo.current.image.replace(
+                            "ipfs://",
+                            "https://silver-historical-squid-116.mypinata.cloud/ipfs/",
+                          ),
+                        };
+                      } else {
+                        tokenInfo.current = {
+                          ...tokenInfo.current,
+                          image: tokenInfo.current.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
+                        };
+                      }
                     }
                     setTokenReady(true);
                   } catch (e) {
@@ -89,7 +112,12 @@ const NftCard = ({ nftAddress, tokenId }: { nftAddress: string | undefined; toke
         <div className="card card-side bg-base-100 h-60 w-96">
           <figure>
             {tokenInfo.current.image ? (
-              <img src={tokenInfo.current.image} alt="Movie" className="object-scale-down h-60" />
+              <img
+                src={tokenInfo.current.image}
+                alt="Movie"
+                className="object-scale-down h-60"
+                crossOrigin="anonymous"
+              />
             ) : (
               <Image
                 src="/load_fail.png"

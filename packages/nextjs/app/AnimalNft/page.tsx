@@ -182,7 +182,7 @@ query($_skip:Int) {
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
           </form>
-          <NftCard nftAddress={NftAddress} tokenId={TokenId}></NftCard>
+          <NftCard nftAddress={NftAddress} tokenId={TokenId} pinata></NftCard>
         </div>
       </dialog>
     </>

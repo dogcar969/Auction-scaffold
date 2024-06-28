@@ -1,23 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import { EtherInput } from "../scaffold-eth";
 import NftCard from "./nftCard";
-import { erc721Abi, formatEther, parseEther } from "viem";
-import { useReadContract } from "wagmi";
+import { formatEther, parseEther } from "viem";
 import Input from "~~/components/Auction/Input";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
-
-const axios = require("axios").default;
 
 export default function AuctionCard({ listing, withPayment }: { listing: any; withPayment: boolean }) {
   const [value, setValue] = useState("");
   const { writeContractAsync: writeAuctionAsync } = useScaffoldWriteContract("Auction");
   return (
     <div className="card card-side bg-base-100 shadow-xl w-fit">
-      <NftCard nftAddress={listing.nftAddress} tokenId={listing.tokenId}></NftCard>
+      <NftCard nftAddress={listing.nftAddress} tokenId={listing.tokenId} pinata={false}></NftCard>
       <div className="*:my-2 my-1 text-sm">
         <p>Auction Info</p>
         <p>Expired time: {new Date(Number(listing.expiredTime * 1000)).toLocaleString()}</p>

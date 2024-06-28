@@ -20,7 +20,7 @@ const NFTCardWithFunction = ({
   const { address: user } = useAccount();
   return (
     <div className="w-96 bg-base-100 rounded-xl">
-      <NftCard nftAddress={nftAddress} tokenId={tokenId}></NftCard>
+      <NftCard nftAddress={nftAddress} tokenId={tokenId} pinata></NftCard>
       <p>approver:</p>
       <p>{approver ? approver : <span className="text-center">no approver</span>}</p>
       <p> Address </p> <AddressInput value={address} onChange={setAddress}></AddressInput>

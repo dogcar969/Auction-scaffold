@@ -32,7 +32,7 @@ export default function Auction() {
   const user = useAccount();
   const auctionInfo = useDeployedContractInfo("Auction").data;
   const [withPayment, setWithPayment] = useState(false);
-  const setWithPaymentInInput = (e: any) => {
+  const setWithPaymentInInput = () => {
     setWithPayment(!withPayment);
   };
   const listings = useRef<any>(null);
@@ -62,7 +62,7 @@ export default function Auction() {
 
   const previewDialog = useRef<any>(null);
 
-  const [prepayAmount, setPrePayAmount] = useState("");
+  const [prepayAmount] = useState("");
   const prepayDialog = useRef<any>(null);
   const { data: balance } = useScaffoldReadContract({
     contractName: "Auction",
@@ -274,7 +274,7 @@ export default function Auction() {
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
           </form>
-          <NftCard tokenId={listTokenId} nftAddress={listNftAddress}></NftCard>
+          <NftCard tokenId={listTokenId} nftAddress={listNftAddress} pinata={false}></NftCard>
         </div>
       </dialog>
     </div>
